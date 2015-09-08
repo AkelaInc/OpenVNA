@@ -7,11 +7,11 @@
  * \ref C-API "C API Documentation"
  *
  * The Python API has two abstraction levels.
- *  - \ref Python-RAW-API provides the \ref RAW_VNA "RAW_VNA" class, and
+ *  - \ref Python-Basic-API provides the \ref VNA::vnalibrary::RAW_VNA "RAW_VNA" class, and
  *         is a thin wrapper around the underlying
  *         c API. It handles type-conversion, keeping track
  *         of the task handle, and little else.
- *  - \ref Python-OOP-API provides the \ref VNA "VNA" class, and
+ *  - \ref Python-OOP-API provides the \ref VNA::vnaclass::VNA "VNA" class, and
  *         is a higher-level interface that makes common
  *         VNA tasks easier to implement.
  *
