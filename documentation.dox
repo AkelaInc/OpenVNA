@@ -1,0 +1,109 @@
+
+
+/**
+ * \mainpage
+ * Akela OpenVNA C & Python API Documentation
+ *
+ * \ref overview "General system overview"
+ *  A brief overview of the VNA's internal state-machine and how it
+ *  interacts with the measurement process.
+ *
+ * \ref setup "Basic Setup"
+ *  A quick overview of how to get an Akela OpenVNA communicating.
+ *
+ *  ---
+ *
+ * \ref C-API "C API Documentation"
+ *
+ * ---
+ *
+ * The Python API has two abstraction levels.
+ *  - \ref Python-Basic-API provides the \ref VNA::vnalibrary::RAW_VNA "RAW_VNA" class, and
+ *         is a thin wrapper around the underlying
+ *         c API. It handles type-conversion, keeping track
+ *         of the task handle, and little else.
+ *  - \ref Python-OOP-API provides the \ref VNA::vnaclass::VNA "VNA" class, and
+ *         is a higher-level interface that makes common
+ *         VNA tasks easier to implement. It is still, to some extent, a
+ *         work-in-progress.
+ *
+ *         It also has some auxilliary modules:
+ *
+ *  - \ref Python-Exceptions is a set of exceptions that may
+ *         be thrown for corresponding C api call exception values.
+ *
+ *
+ * ---
+ *
+ * Application Notes:
+ *
+ *  - <a href='../app_notes/tech_note_-_sweep_speed_calculation_v5.pdf'>AKELA VNA Sweep Speed and Resolution Bandwidth Calculation</a>
+ *
+ */
+
+
+/**
+ * \addtogroup overview System Overview
+ *
+ * The VNA has several operating states, which it can be helpful to understand
+ * to better use the hardware.
+ *
+ *
+ *  - **Uninitialized**
+ *       This is the mode the VNA is in when it's not connected to a application,
+ *       or after it has been power cycled.
+ *
+ *  - **Stopped**
+ *       The VNA is connected to a computer, the supported sweep parameters and
+ *       embedded calibration data (if present) have been retreived and cached
+ *       locally, and the sweep parameters can be configured.
+ *
+ *       In general, most of the measurement parameters can only be adjusted
+ *       while the hardware is in the stopped state.
+ *
+ *  - **Started**
+ *       The VNA is ready to begin a sweep. This means that the sweep program specified
+ *       by the measurement parameters has been generated on the PC end, and then
+ *       downloaded into the VNA's internal memory.
+ *
+ *       Once in the started mode, the timing between the reception of a "take-sweep" message
+ *       and the actual commencement of a measurement sweep is *rigidly* deterministic.
+ *
+ * These states map quite closely to interfaces exposed through the various demo
+ * applications. The Python application exposes the `uninitialized` -> `stopped`
+ * state transition through the "connect" button, and toggling between `stopped` and
+ * `started` via the "run" button.
+ *
+ * The C++ API demo wraps hides the `stopped` state internally, setting up a measurement
+ * and then immediately starting it on initialization.
+ *
+ */
+
+
+/**
+ * \addtogroup setup Basic Setup
+ *
+ * Akela VNAs are network devices. They have a static, pre-assigned IP from the
+ * factory on the `192.168.1.x` subnet.
+ *
+ * To communicate with a VNA, your computer must be on the same subnet, so
+ * you either need a computer with a manually entered static IP on the correct
+ * subnet, or a DHCP server that serves IP within the correct subnet (and
+ * ideally has the proper exclusions so it will not assign another device
+ * the same IP as the VNA).
+ *
+ * A VNA can be directly connected to a client computer without issue, but
+ * the computer's IP must be manually set.
+ *
+ * The IP of the VNA can be changed with a utility, but due to current firmware
+ * limitations, only the last octet of the IP can be modified.
+ *
+ * Once a computer is properly configured on the same network as a VNA,
+ * connectivity can be tested with either the OpenVNA C++ demo app, or
+ * the Python demo application. **The VNAs do *not* respond to `PING` packets,**
+ * so you cannot verify your network connectivity that way.
+ * `nmap`'s ARP scan can detect the presence of the VNAs (they support ARP), so
+ * that can be a useable mechanism for validating a network configuration, if
+ * needed.
+ *
+ */

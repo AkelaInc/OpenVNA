@@ -1,28 +1,9 @@
 #ifndef __AKELA_VNA_DLL_H
 #define __AKELA_VNA_DLL_H
-/**
- * \mainpage
- * Akela OpenVNA C & Python API Documentation
- *
- * \ref C-API "C API Documentation"
- *
- * The Python API has two abstraction levels.
- *  - \ref Python-Basic-API provides the \ref VNA::vnalibrary::RAW_VNA "RAW_VNA" class, and
- *         is a thin wrapper around the underlying
- *         c API. It handles type-conversion, keeping track
- *         of the task handle, and little else.
- *  - \ref Python-OOP-API provides the \ref VNA::vnaclass::VNA "VNA" class, and
- *         is a higher-level interface that makes common
- *         VNA tasks easier to implement.
- *
- * It also has some auxilliary modules:
- *  - \ref Python-Exceptions is a set of exceptions that may
- *         be thrown for corresponding C api call exception values.
- */
 
 
 /** \addtogroup C-API
- * @authors Stephen Hunt (shunt@akelainc.com), Connor Wolf (cwolf@akelainc.com)
+ * \authors Stephen Hunt (shunt@akelainc.com), Connor Wolf (cwolf@akelainc.com)
  *
  *  \section state-overview Run-state overview
  *
