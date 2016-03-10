@@ -1,10 +1,16 @@
 ## OpenVNA
 
-This is the header-file for the Akela OpenVNA API.
+This is the header-file for the Akela OpenVNA API, as well as the windows 
+DLL files required to interface with a local Akela VNA.
 
-Eventually (a week or so), this repository should also contain 32 & 64 bit 
-.DLL/.SO dynamically-linkable libraries that the header file corresponds
-to, but that will have to wait for a bit untill I can work out the 
-best way to build multiple DLL types (32 & 64) simultaneously from the 
-same build process.
+Note that header files are associated with a particular DLL version, so
+the header file is in the subdirectory containing the DLL folders.
 
+The correct DLL for your platform (32/64 bit) is also required for the various
+demonstration applications that work with the VNA, both the Python and C++ 
+versions.
+
+----
+
+Our build-process can easily produce linux shared libraries, please let us know 
+what distro you use so we can validate compatibility.

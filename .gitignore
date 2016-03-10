@@ -5,7 +5,6 @@
 *.aps
 *.bin
 *.decoded.txt
-*.dll
 *.exe
 *.idb
 *.idc
