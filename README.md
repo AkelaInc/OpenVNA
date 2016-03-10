@@ -13,4 +13,6 @@ versions.
 ----
 
 Our build-process can easily produce linux shared libraries, please let us know 
-what distro you use so we can validate compatibility.
+what distro you use so we can validate compatibility. Drop us a line (or open
+a bug report), and we should be able to provide a *.so for your distro of choice
+within a few days.
