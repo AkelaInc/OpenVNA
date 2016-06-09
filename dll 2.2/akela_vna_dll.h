@@ -1,4 +1,7 @@
 
+#ifndef __AKELA_VNA_DLL_HEADER
+#define __AKELA_VNA_DLL_HEADER
+
 
 /** \addtogroup VNA-C-API
  * \authors Steven Hunt (shunt@akelainc.com), Connor Wolf (cwolf@akelainc.com)
@@ -128,6 +131,7 @@ extern "C" {
 	typedef int HopRate;
 
 	 __declspec(dllimport) HopRate HOP_UNDEFINED;  //!< Hop rate not set yet
+	 // __declspec(dllimport) HopRate HOP_90K;  //!< This rate is currently unsupported but may be enabled in the future 90K Pts/second
 	 __declspec(dllimport) HopRate HOP_45K;  //!< Hop rate of 45K points/second
 	 __declspec(dllimport) HopRate HOP_30K;  //!< Hop rate of 30K points/second
 	 __declspec(dllimport) HopRate HOP_15K;  //!< Hop rate of 15K points/second
@@ -161,40 +165,6 @@ extern "C" {
 	 __declspec(dllimport) TaskState TASK_RUNNING;       //!< Task state of running
 
 	/** @}*/
-
-	/** \addtogroup RFPathSelector
-	 *  @brief Available RF paths the hardware can support.
-	 *
-	 *  @{
-	 */
-	/**
-	 * RF path selector type. Treat this as an opaque type.
-	 */
-	typedef int RFPath;
-
-	// These are the paths available on the switchboard used by the VNA product
-	 __declspec(dllimport) RFPath PATH_T1R1; //!< Out port T1, in port T1
-	 __declspec(dllimport) RFPath PATH_T1R2; //!< Out port T1, in port T2
-	 __declspec(dllimport) RFPath PATH_T2R1; //!< Out port T2, in port T1
-	 __declspec(dllimport) RFPath PATH_T2R2; //!< Out port T2, in port T2
-	 __declspec(dllimport) RFPath PATH_REF;  //!< Reference path
-
-	// These are the paths available on the 4-port switchboard that can do TDD
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T1R2; //!< Out port T1, in port R2
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T1R3; //!< Out port T1, in port R3
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T1R4; //!< Out port T1, in port R4
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T2R1; //!< Out port T2, in port R1
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T2R3; //!< Out port T2, in port R3
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T2R4; //!< Out port T2, in port R4
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T3R1; //!< Out port T3, in port R1
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T3R2; //!< Out port T3, in port R2
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T3R4; //!< Out port T3, in port R4
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T4R1; //!< Out port T4, in port R1
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T4R2; //!< Out port T4, in port R2
-	 __declspec(dllimport) RFPath RADAR_TDD_PATH_T4R3; //!< Out port T4, in port R3
-
-	/** @}*/
-
 	/** \addtogroup Acquisition Type
 	*  @brief Acquisition mode (synchronous, asynchronous) for the current acquisition
 	*
@@ -239,6 +209,19 @@ extern "C" {
 		int number_of_band_boundaries;
 	} HardwareDetails;
 
+	/**
+	 * Container struct for passing IQ data sets around.
+	 * The `I` and `Q` members are pointers to caller-allocated
+	 * arrays of the requisite type (double, in this case).
+	 */
+
+	typedef struct ComplexDataStruct_t
+	{
+		/** In-phase component value array */
+		double* I;
+		/** Quadrature component value array */
+		double* Q;
+	} ComplexDataStruct;
 
 
 	/**
@@ -659,7 +642,7 @@ extern "C" {
 	 *      - ERR_WRONG_STATE if the Task is not in the TASK_STOPPED state
 	*/
 	__declspec(dllimport) ErrCode setSendSweepTimer(TaskHandle t, bool send_timer);
-	__declspec(dllimport) bool getSendSweepTimer(TaskHandle t);
+	__declspec(dllimport) ErrCode getSendSweepTimer(TaskHandle t, bool* val);
 
 
 	/**
@@ -673,7 +656,7 @@ extern "C" {
 	 *      - ERR_WRONG_STATE if the Task is not in the TASK_STOPPED state
 	*/
 	__declspec(dllimport) ErrCode setResetFrameCounterOnStart(TaskHandle t, bool do_reset);
-	__declspec(dllimport) bool getResetFrameCounterOnStart(TaskHandle t);
+	__declspec(dllimport) ErrCode getResetFrameCounterOnStart(TaskHandle t, bool* val);
 
 
 
@@ -690,40 +673,49 @@ extern "C" {
 	 * Attenuation value type. Treat this as an opaque type.
 	 */
 	typedef int Attenuation;
-	extern __declspec(dllimport) Attenuation ATTEN_UNDEFINED;  //!< Attenuation value not set
-	extern __declspec(dllimport) Attenuation ATTEN_0;   //!< Attenuation value of 0 dB
-	extern __declspec(dllimport) Attenuation ATTEN_1;   //!< Attenuation value of 1 dB
-	extern __declspec(dllimport) Attenuation ATTEN_2;   //!< Attenuation value of 2 dB
-	extern __declspec(dllimport) Attenuation ATTEN_3;   //!< Attenuation value of 3 dB
-	extern __declspec(dllimport) Attenuation ATTEN_4;   //!< Attenuation value of 4 dB
-	extern __declspec(dllimport) Attenuation ATTEN_5;   //!< Attenuation value of 5 dB
-	extern __declspec(dllimport) Attenuation ATTEN_6;   //!< Attenuation value of 6 dB
-	extern __declspec(dllimport) Attenuation ATTEN_7;   //!< Attenuation value of 7 dB
-	extern __declspec(dllimport) Attenuation ATTEN_8;   //!< Attenuation value of 8 dB
-	extern __declspec(dllimport) Attenuation ATTEN_9;   //!< Attenuation value of 9 dB
-	extern __declspec(dllimport) Attenuation ATTEN_10;  //!< Attenuation value of 10 dB
-	extern __declspec(dllimport) Attenuation ATTEN_11;  //!< Attenuation value of 11 dB
-	extern __declspec(dllimport) Attenuation ATTEN_12;  //!< Attenuation value of 12 dB
-	extern __declspec(dllimport) Attenuation ATTEN_13;  //!< Attenuation value of 13 dB
-	extern __declspec(dllimport) Attenuation ATTEN_14;  //!< Attenuation value of 14 dB
-	extern __declspec(dllimport) Attenuation ATTEN_15;  //!< Attenuation value of 15 dB
-	extern __declspec(dllimport) Attenuation ATTEN_16;  //!< Attenuation value of 16 dB
-	extern __declspec(dllimport) Attenuation ATTEN_17;  //!< Attenuation value of 17 dB
-	extern __declspec(dllimport) Attenuation ATTEN_18;  //!< Attenuation value of 18 dB
-	extern __declspec(dllimport) Attenuation ATTEN_19;  //!< Attenuation value of 19 dB
-	extern __declspec(dllimport) Attenuation ATTEN_20;  //!< Attenuation value of 20 dB
-	extern __declspec(dllimport) Attenuation ATTEN_21;  //!< Attenuation value of 21 dB
-	extern __declspec(dllimport) Attenuation ATTEN_22;  //!< Attenuation value of 22 dB
-	extern __declspec(dllimport) Attenuation ATTEN_23;  //!< Attenuation value of 23 dB
-	extern __declspec(dllimport) Attenuation ATTEN_24;  //!< Attenuation value of 24 dB
-	extern __declspec(dllimport) Attenuation ATTEN_25;  //!< Attenuation value of 25 dB
-	extern __declspec(dllimport) Attenuation ATTEN_26;  //!< Attenuation value of 26 dB
-	extern __declspec(dllimport) Attenuation ATTEN_27;  //!< Attenuation value of 27 dB
-	extern __declspec(dllimport) Attenuation ATTEN_28;  //!< Attenuation value of 28 dB
-	extern __declspec(dllimport) Attenuation ATTEN_29;  //!< Attenuation value of 29 dB
-	extern __declspec(dllimport) Attenuation ATTEN_30;  //!< Attenuation value of 30 dB
-	extern __declspec(dllimport) Attenuation ATTEN_31;  //!< Attenuation value of 31 dB
+	 __declspec(dllimport) Attenuation ATTEN_UNDEFINED;  //!< Attenuation value not set
+	 __declspec(dllimport) Attenuation ATTEN_0;          //!< Attenuation value of 0 dB
+	 __declspec(dllimport) Attenuation ATTEN_1;          //!< Attenuation value of 1 dB
+	 __declspec(dllimport) Attenuation ATTEN_2;          //!< Attenuation value of 2 dB
+	 __declspec(dllimport) Attenuation ATTEN_3;          //!< Attenuation value of 3 dB
+	 __declspec(dllimport) Attenuation ATTEN_4;          //!< Attenuation value of 4 dB
+	 __declspec(dllimport) Attenuation ATTEN_5;          //!< Attenuation value of 5 dB
+	 __declspec(dllimport) Attenuation ATTEN_6;          //!< Attenuation value of 6 dB
+	 __declspec(dllimport) Attenuation ATTEN_7;          //!< Attenuation value of 7 dB
+	 __declspec(dllimport) Attenuation ATTEN_8;          //!< Attenuation value of 8 dB
+	 __declspec(dllimport) Attenuation ATTEN_9;          //!< Attenuation value of 9 dB
+	 __declspec(dllimport) Attenuation ATTEN_10;         //!< Attenuation value of 10 dB
+	 __declspec(dllimport) Attenuation ATTEN_11;         //!< Attenuation value of 11 dB
+	 __declspec(dllimport) Attenuation ATTEN_12;         //!< Attenuation value of 12 dB
+	 __declspec(dllimport) Attenuation ATTEN_13;         //!< Attenuation value of 13 dB
+	 __declspec(dllimport) Attenuation ATTEN_14;         //!< Attenuation value of 14 dB
+	 __declspec(dllimport) Attenuation ATTEN_15;         //!< Attenuation value of 15 dB
+	 __declspec(dllimport) Attenuation ATTEN_16;         //!< Attenuation value of 16 dB
+	 __declspec(dllimport) Attenuation ATTEN_17;         //!< Attenuation value of 17 dB
+	 __declspec(dllimport) Attenuation ATTEN_18;         //!< Attenuation value of 18 dB
+	 __declspec(dllimport) Attenuation ATTEN_19;         //!< Attenuation value of 19 dB
+	 __declspec(dllimport) Attenuation ATTEN_20;         //!< Attenuation value of 20 dB
+	 __declspec(dllimport) Attenuation ATTEN_21;         //!< Attenuation value of 21 dB
+	 __declspec(dllimport) Attenuation ATTEN_22;         //!< Attenuation value of 22 dB
+	 __declspec(dllimport) Attenuation ATTEN_23;         //!< Attenuation value of 23 dB
+	 __declspec(dllimport) Attenuation ATTEN_24;         //!< Attenuation value of 24 dB
+	 __declspec(dllimport) Attenuation ATTEN_25;         //!< Attenuation value of 25 dB
+	 __declspec(dllimport) Attenuation ATTEN_26;         //!< Attenuation value of 26 dB
+	 __declspec(dllimport) Attenuation ATTEN_27;         //!< Attenuation value of 27 dB
+	 __declspec(dllimport) Attenuation ATTEN_28;         //!< Attenuation value of 28 dB
+	 __declspec(dllimport) Attenuation ATTEN_29;         //!< Attenuation value of 29 dB
+	 __declspec(dllimport) Attenuation ATTEN_30;         //!< Attenuation value of 30 dB
+	 __declspec(dllimport) Attenuation ATTEN_31;         //!< Attenuation value of 31 dB
 	/** @}*/
+
+
+	typedef int RFPath;
+	// These are the paths available on the switchboard used by the VNA product
+	 __declspec(dllimport) RFPath PATH_T1R1; //!< Out port T1, in port T1
+	 __declspec(dllimport) RFPath PATH_T1R2; //!< Out port T1, in port T2
+	 __declspec(dllimport) RFPath PATH_T2R1; //!< Out port T2, in port T1
+	 __declspec(dllimport) RFPath PATH_T2R2; //!< Out port T2, in port T2
+	 __declspec(dllimport) RFPath PATH_REF;  //!< Reference path
 
 	/** \addtogroup SParameterSelector
 	 *  @brief Available S-parameter measurements.
@@ -735,10 +727,10 @@ extern "C" {
 	 * S-parameter path selector type. Treat this as an opaque type.
 	 */
 	typedef int SParameter;
-	extern __declspec(dllimport) SParameter PARAM_S11;  //!< S11 Parameter
-	extern __declspec(dllimport) SParameter PARAM_S21;  //!< S21 Parameter
-	extern __declspec(dllimport) SParameter PARAM_S12;  //!< S12 Parameter
-	extern __declspec(dllimport) SParameter PARAM_S22;  //!< S22 Parameter
+	 __declspec(dllimport) SParameter PARAM_S11;  //!< S11 Parameter
+	 __declspec(dllimport) SParameter PARAM_S21;  //!< S21 Parameter
+	 __declspec(dllimport) SParameter PARAM_S12;  //!< S12 Parameter
+	 __declspec(dllimport) SParameter PARAM_S22;  //!< S22 Parameter
 	/** @}*/
 
 	/** \addtogroup CalibrationStep
@@ -750,13 +742,13 @@ extern "C" {
 	 * Calibration mode type. Treat this as an opaque type.
 	 */
 	typedef int CalibrationStep;
-	extern __declspec(dllimport) CalibrationStep STEP_P1_OPEN;   //!< Calibration step for measuring a open on port 1
-	extern __declspec(dllimport) CalibrationStep STEP_P1_SHORT;  //!< Calibration step for measuring a short on port 1
-	extern __declspec(dllimport) CalibrationStep STEP_P1_LOAD;   //!< Calibration step for measuring a load on port 1
-	extern __declspec(dllimport) CalibrationStep STEP_P2_OPEN;   //!< Calibration step for measuring a open on port 2
-	extern __declspec(dllimport) CalibrationStep STEP_P2_SHORT;  //!< Calibration step for measuring a short on port 2
-	extern __declspec(dllimport) CalibrationStep STEP_P2_LOAD;   //!< Calibration step for measuring a load on port 2
-	extern __declspec(dllimport) CalibrationStep STEP_THRU;      //!< Calibration step for measuring a through from port 1 - port 2
+	 __declspec(dllimport) CalibrationStep STEP_P1_OPEN;   //!< Calibration step for measuring a open on port 1
+	 __declspec(dllimport) CalibrationStep STEP_P1_SHORT;  //!< Calibration step for measuring a short on port 1
+	 __declspec(dllimport) CalibrationStep STEP_P1_LOAD;   //!< Calibration step for measuring a load on port 1
+	 __declspec(dllimport) CalibrationStep STEP_P2_OPEN;   //!< Calibration step for measuring a open on port 2
+	 __declspec(dllimport) CalibrationStep STEP_P2_SHORT;  //!< Calibration step for measuring a short on port 2
+	 __declspec(dllimport) CalibrationStep STEP_P2_LOAD;   //!< Calibration step for measuring a load on port 2
+	 __declspec(dllimport) CalibrationStep STEP_THRU;      //!< Calibration step for measuring a through from port 1 - port 2
 	/** @}*/
 
 	/**
@@ -1011,7 +1003,7 @@ extern "C" {
 	 * @param t Handle for the current task
 	 * @return number of frequencies in calibration data.
 	 */
-	__declspec(dllimport) unsigned int getCalibrationNumberOfFrequencies(TaskHandle t);
+	__declspec(dllimport) size_t getCalibrationNumberOfFrequencies(TaskHandle t);
 
 	/**
 	 * @brief Get a pointer to the list of frequencies used in the calibration data.
@@ -1166,3 +1158,6 @@ extern "C" {
 
 
 /** @}*/
+
+#endif
+
