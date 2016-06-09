@@ -14,8 +14,8 @@ The DLL requires the Microsoft Visual C++ 2013 redistributable package to
 operate properly. This is provided in this repository (see `vcredist_x86.exe` or
 `vcredist_x64.exe` for 32 and 64 bit architectures respectively, in the 
 `dependencies` folder).
-Alternatively, you can download the Visual C++ 2013 from microsoft directly 
-here: https://www.microsoft.com/en-us/download/details.aspx?id=40784
+Alternatively, you can download the Visual C++ 2013 package from microsoft 
+directly by going here: https://www.microsoft.com/en-us/download/details.aspx?id=40784
 
 ----
 
