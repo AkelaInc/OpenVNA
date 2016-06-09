@@ -10,6 +10,13 @@ The correct DLL for your platform (32/64 bit) is also required for the various
 demonstration applications that work with the VNA, both the Python and C++ 
 versions.
 
+The DLL requires the Microsoft Visual C++ 2013 redistributable package to 
+operate properly. This is provided in this repository (see `vcredist_x86.exe` or
+`vcredist_x64.exe` for 32 and 64 bit architectures respectively, in the 
+`dependencies` folder).
+Alternatively, you can download the Visual C++ 2013 from microsoft directly 
+here: https://www.microsoft.com/en-us/download/details.aspx?id=40784
+
 ----
 
 Our build-process can easily produce linux shared libraries, please let us know 
